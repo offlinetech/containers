@@ -13,7 +13,6 @@ env:
   TF_STORAGE_ACCOUNT: 'stcontainers'
   TF_CONTAINER: 'tfstate'
   LOCATION: 'westeurope'
-  WORKING_DIRECTORY: ./terraform
 
 jobs:
 
@@ -28,12 +27,8 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ${{ env.WORKING_DIRECTORY }}
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
 
       # Login to Azure with OIDC
       - name: Azure login
