@@ -1,5 +1,5 @@
 module "container-registry" {
-	source = "./tf-modules/container-registry"
+	source = "../tf-modules/container-registry"
 
   CR_NAME                          = module.container-registry.caf_name
   CR_RESOURCE_GROUP_NAME           = module.data-resource-group.name
