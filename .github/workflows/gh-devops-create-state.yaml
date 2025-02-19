@@ -5,16 +5,16 @@ on:
     branches:
       - main
 
-  workflow_dispatch:
-    inputs:
-      region:
-        description: 'Select Cloud Region'
-        required: true
-        type: 'choice'
-        default: 'westeurope'
-        options:
-          - 'northeurope'
-          - 'westeurope'
+  # workflow_dispatch:
+  #   inputs:
+  #     region:
+  #       description: 'Select Cloud Region'
+  #       required: true
+  #       type: 'choice'
+  #       default: 'westeurope'
+  #       options:
+  #         - 'northeurope'
+  #         - 'westeurope'
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
@@ -23,7 +23,7 @@ env:
   TF_RESOURCE_GROUP: 'github-devops'
   TF_STORAGE_ACCOUNT: 'stgithubdevops'
   TF_CONTAINER: 'tfstate'
-  LOCATION: ${{ github.event.inputs.region }}
+  LOCATION: 'westeurope' # ${{ github.event.inputs.region }}
   WORKING_DIRECTORY: ./terraform
 
 permissions:
