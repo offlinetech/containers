@@ -1,9 +1,14 @@
 name: Create GitHub Devops remote state
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      location:
+        type: choice
+        description: Cloud Location
+        options:
+          - northeurope
+          - westeurope
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
@@ -12,7 +17,8 @@ env:
   TF_RESOURCE_GROUP: 'github-devops'
   TF_STORAGE_ACCOUNT: 'stgithubdevops'
   TF_CONTAINER: 'tfstate'
-  LOCATION: 'westeurope'
+  LOCATION: ${{ github.event.inputs.location }}
+  WORKING_DIRECTORY: ./terraform
 
 permissions:
   id-token: write
@@ -38,6 +44,7 @@ jobs:
           tenant-id: ${{ env.AZURE_TENANT_ID }}
           subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
 
+      # Create 
       - name: Terraform state storage
         uses: Azure/cli@v2.1.0
         with:
@@ -88,7 +95,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="./backend.tfvars"
+        run: terraform init -backend-config="backend.tfvars"
         env:
           ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
