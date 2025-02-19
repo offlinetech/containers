@@ -3,12 +3,14 @@ name: Create GitHub Devops remote state
 on:
   workflow_dispatch:
     inputs:
-      location:
-        type: choice
-        description: Cloud Location
+      region:
+        description: 'Select Cloud Region'
+        required: true
+        type: 'choice'
+        default: 'westeurope'
         options:
-          - northeurope
-          - westeurope
+          - 'northeurope'
+          - 'westeurope'
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
@@ -17,7 +19,7 @@ env:
   TF_RESOURCE_GROUP: 'github-devops'
   TF_STORAGE_ACCOUNT: 'stgithubdevops'
   TF_CONTAINER: 'tfstate'
-  LOCATION: ${{ github.event.inputs.location }}
+  LOCATION: ${{ github.event.inputs.region }}
   WORKING_DIRECTORY: ./terraform
 
 permissions:
