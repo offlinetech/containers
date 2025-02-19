@@ -31,15 +31,25 @@ jobs:
         shell: bash
 
     steps:
+      - name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: Offlinetech
+          password: ${{ secrets.CONTAINERS_PAT}}
 
-      - name: GitHub Container Registry authentication
-        run: echo "${{ secrets.CONTAINERS_PAT }}" | docker login ghcr.io -u Offlinetech --password-stdin
 
-      - name: Pull Docker Hub image
-        run: docker pull ${{ github.event.inputs.container }}
 
-      - name: Tag the image
-        run: docker tag ${{ github.event.inputs.container }} ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
+      
 
-      - name: Push image to GitHub Container Registry
-        run: docker push ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
+      # - name: GitHub Container Registry authentication
+      #   run: echo "${{ secrets.CONTAINERS_PAT }}" | docker login ghcr.io -u Offlinetech --password-stdin
+
+      # - name: Pull Docker Hub image
+      #   run: docker pull ${{ github.event.inputs.container }}
+
+      # - name: Tag the image
+      #   run: docker tag ${{ github.event.inputs.container }} ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
+
+      # - name: Push image to GitHub Container Registry
+      #   run: docker push ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
