@@ -1,4 +1,4 @@
-resource_group_name = "genai-dev-we-01-rg"
-storage_account_name = "stnttpersonahubdev"
+resource_group_name = "github-devops"
+storage_account_name = "stgithubdevops"
 container_name = "tfstate"
 key = "terraform.tfstate"
