@@ -42,7 +42,6 @@ jobs:
   create-terraform-state-backend:
     name: Create terraform backend
     runs-on: ubuntu-latest
-
     defaults:
       run:
         shell: bash
