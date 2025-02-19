@@ -46,7 +46,7 @@ jobs:
           terraform_version: 1.9.8
 
       - name: Terraform init
-        run: terraform init -backend-config="./dev/backend.tfvars"
+        run: terraform init -backend-config="./backend.tfvars"
         env:
           ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
