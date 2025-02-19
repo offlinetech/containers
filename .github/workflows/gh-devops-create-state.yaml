@@ -1,0 +1,100 @@
+name: Create GitHub Devops remote state
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
+  AZURE_TENANT_ID: '3df6e774-7c8d-4508-8d07-ffc87c202d4d'
+  AZURE_SUBSCRIPTION_ID: 'f160f06a-ac2d-4779-a454-e265dc381318'
+  TF_RESOURCE_GROUP: 'github-devops'
+  TF_STORAGE_ACCOUNT: 'stcontainers'
+  TF_CONTAINER: 'tfstate'
+  LOCATION: 'westeurope'
+  WORKING_DIRECTORY: ./terraform
+
+jobs:
+
+
+  create-terraform-state-backend:
+    name: Create terraform backend
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      # Login to Azure with OIDC
+      - name: Azure login
+        uses: azure/login@v2.2.0
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Terraform state storage
+        uses: Azure/cli@v2.1.0
+        with:
+
+          inlineScript: |
+            az account show
+
+            echo ""
+            echo "🎯 Changing default subscription for: " ${{ env.AZURE_SUBSCRIPTION_ID }}
+            az account set --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+            echo "🎯 Getting resource group named: " ${{ env.TF_RESOURCE_GROUP }}
+            RG_EXISTS=$(az group exists --name ${{ env.TF_RESOURCE_GROUP }} )
+            if [ $RG_EXISTS == "false" ]; then
+              echo "Resource group not found, creating... "
+              az group create --name ${{ env.TF_RESOURCE_GROUP }} --location ${{ env.LOCATION }}
+            fi
+            RESOURCE_GROUP_ID=$(az group show -n ${{ env.TF_RESOURCE_GROUP }} -o tsv --query id)
+
+            echo "🎯 Getting storage account named: " ${{ env.TF_STORAGE_ACCOUNT }}
+            STORAGE_ACCOUNT_NOT_FOUND=$(az storage account check-name --name ${{ env.TF_STORAGE_ACCOUNT }} --query nameAvailable)
+            if [ $STORAGE_ACCOUNT_NOT_FOUND == "true" ]; then
+              echo ""
+              echo "Storage account not found. Creating..."
+              az storage account create --resource-group ${{ env.TF_RESOURCE_GROUP }} --name ${{ env.TF_STORAGE_ACCOUNT }} --location ${{ env.LOCATION }} --sku Standard_LRS --encryption-services blob
+            fi
+            STORAGE_ACCOUNT=$(az storage account show --name ${{ env.TF_STORAGE_ACCOUNT }} -o tsv --query id)
+
+            echo "🎯 Getting storage account container named: " ${{ env.TF_CONTAINER }}
+            STORAGE_COUNTAINER_EXISTS=$(az storage container exists --name ${{ env.TF_CONTAINER }} --account-name ${{ env.TF_STORAGE_ACCOUNT }}  --query exists)
+            if [ $STORAGE_COUNTAINER_EXISTS == "false" ]; then
+              echo ""
+              echo "Blob container not found. Creating..."
+              az storage container create --name ${{ env.TF_CONTAINER }} --account-name ${{ env.TF_STORAGE_ACCOUNT }}
+            fi
+            STORAGE_CONTAINER=$(az storage account show --name ${{ env.TF_STORAGE_ACCOUNT }} -o tsv --query primaryEndpoints.blob)${{ env.TF_CONTAINER }}
+
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      # Install the latest version of Terraform CLI
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3.1.2
+        with:
+          terraform_version: 1.9.8
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="./backend.tfvars"
+        env:
+          ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
+          ARM_USE_OIDC: true

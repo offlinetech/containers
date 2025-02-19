@@ -1,0 +1,6 @@
+CLIENT_NAME = "offlinetech"
+PROJECT_NAME = "containers"
+SHORT_PROJECT_NAME = "oc"
+APPLICATION_NAME = "genai"
+LOCATION = "westeurope"
+SHORT_LOCATION = "we"
