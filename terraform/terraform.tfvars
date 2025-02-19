@@ -1,6 +1,8 @@
+ENVIRONMENT = "sandbox"
 CLIENT_NAME = "offlinetech"
 PROJECT_NAME = "containers"
-# SHORT_PROJECT_NAME = "oc"
 APPLICATION_NAME = "genai"
+
+RESOURCE_GROUP_NAME = "github-devops"
+STORAGE_ACCOUNT_NAME = "stgithubdevops"
 # LOCATION = "westeurope"
-# SHORT_LOCATION = "we"

@@ -1,20 +1,19 @@
 name: Create GitHub Devops remote state
 
 on:
-  push:
-    branches:
-      - main
-
-  # workflow_dispatch:
-  #   inputs:
-  #     region:
-  #       description: 'Select Cloud Region'
-  #       required: true
-  #       type: 'choice'
-  #       default: 'westeurope'
-  #       options:
-  #         - 'northeurope'
-  #         - 'westeurope'
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:
+    inputs:
+      region:
+        description: 'Select Cloud Region'
+        required: true
+        type: choice
+        default: 'westeurope'
+        options:
+          - 'northeurope'
+          - 'westeurope'
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
@@ -23,7 +22,7 @@ env:
   TF_RESOURCE_GROUP: 'github-devops'
   TF_STORAGE_ACCOUNT: 'stgithubdevops'
   TF_CONTAINER: 'tfstate'
-  LOCATION: 'westeurope' # ${{ github.event.inputs.region }}
+  LOCATION: ${{ github.event.inputs.region }}
   WORKING_DIRECTORY: ./terraform
 
 permissions:
@@ -57,8 +56,6 @@ jobs:
         with:
 
           inlineScript: |
-            az account show
-
             echo ""
             echo "🎯 Changing default subscription for: " ${{ env.AZURE_SUBSCRIPTION_ID }}
             az account set --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
@@ -94,19 +91,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
 
-
-      - name: List Directories
-        run: |
-          ls -a
-
       # Install the latest version of Terraform CLI
-      - name: Install Terraform
+      - name: Install terraform
         uses: hashicorp/setup-terraform@v3.1.2
         with:
           terraform_version: 1.9.8
 
-      - name: Terraform Init
-        id: init
+      - name: Terraform init
         run: terraform init -backend-config="./backend.tfvars"
         env:
           ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}

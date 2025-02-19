@@ -1,0 +1,94 @@
+name: Terraform Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
+  AZURE_TENANT_ID: '3df6e774-7c8d-4508-8d07-ffc87c202d4d'
+  AZURE_SUBSCRIPTION_ID: 'f160f06a-ac2d-4779-a454-e265dc381318'
+
+jobs:
+
+  terraform-plan:
+    name: 'Terraform plan'
+    runs-on: ubuntu-latest
+    env:
+      TF_DIRECTORY: ./terraform
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.TF_DIRECTORY }}
+    
+    steps:
+
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      # Login to Azure with OIDC
+      - name: Azure login
+        uses: azure/login@v2.2.0
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      # Install the latest version of Terraform CLI
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3.1.2
+        with:
+          terraform_version: 1.9.8
+
+      - name: Terraform init
+        run: terraform init -backend-config="./dev/backend.tfvars"
+        env:
+          ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
+          ARM_USE_OIDC: true
+    
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform format
+        run: terraform fmt
+        continue-on-error: true
+
+      - name: Terraform plan
+        env:
+          ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
+          ARM_USE_OIDC: true
+        run: terraform plan -no-color tfplan
+
+      # Create string output of Terraform Plan
+      - name: Create String Output
+        id: tf-plan-string
+        run: |
+            TERRAFORM_PLAN=$(terraform show -no-color tfplan)
+
+            delimiter="$(openssl rand -hex 8)"
+            echo "summary<<${delimiter}" >> $GITHUB_OUTPUT
+            echo "## Terraform Plan Output" >> $GITHUB_OUTPUT
+            echo "<details><summary>Click to expand</summary>" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo '```terraform' >> $GITHUB_OUTPUT
+            echo "$TERRAFORM_PLAN" >> $GITHUB_OUTPUT
+            echo '```' >> $GITHUB_OUTPUT
+            echo "</details>" >> $GITHUB_OUTPUT
+            echo "${delimiter}" >> $GITHUB_OUTPUT
+            
+      # Publish terraform plan as task summary
+      - name: Publish Terraform DEV Plan to Task Summary
+        env:
+            SUMMARY: ${{ steps.tf-plan-string.outputs.summary }}
+        run: |
+            echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
+
