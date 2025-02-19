@@ -2,7 +2,11 @@ ENVIRONMENT = "sandbox"
 CLIENT_NAME = "offlinetech"
 PROJECT_NAME = "containers"
 APPLICATION_NAME = "genai"
-
+# LOCATION = "westeurope"
 RESOURCE_GROUP_NAME = "github-devops"
 STORAGE_ACCOUNT_NAME = "stgithubdevops"
-# LOCATION = "westeurope"
+
+REGISTRY_SKU = "Basic"
+REGISTRY_ADMIN_ENABLED = true
+REGISTRY_PUBLIC_NETWORK_ACCESS_ENABLED = true
+REGISTRY_NETWORK_RULE_BYPASS_OPTION = "AzureServices"
