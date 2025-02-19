@@ -33,7 +33,7 @@ jobs:
     steps:
 
       - name: GitHub Container Registry authentication
-        run: echo ${{ secrets.REPO_CLASSIC_TOKEN }} | docker login ghcr.io -username Offlinetech -- G0rjWx56
+        run: echo ${{ secrets.REPO_CLASSIC_TOKEN }} | docker login ghcr.io --sername Offlinetech --password G0rjWx56
 
       # - name: Pull Docker Hub image
       #   run: docker pull ${{ github.event.inputs.container }}
