@@ -89,6 +89,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
 
+
+      - name: List Directories
+        run: |
+          ls -a
+
       # Install the latest version of Terraform CLI
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3.1.2
@@ -97,7 +102,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="./terraform/backend.tfvars"
+        run: terraform init -backend-config="./backend.tfvars"
         env:
           ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
