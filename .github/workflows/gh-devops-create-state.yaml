@@ -12,7 +12,7 @@ env:
   TF_RESOURCE_GROUP: 'github-devops'
   TF_STORAGE_ACCOUNT: 'stcontainers'
   TF_CONTAINER: 'tfstate'
-  LOCATION: 'westeurope'
+  LOCATION: 'northeurope'
 
 permissions:
   id-token: write
