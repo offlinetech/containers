@@ -1,4 +1,4 @@
-name: Create GitHub Devops remote state
+name: Create GitHub DevOps remote state
 
 on:
   # push:
@@ -6,6 +6,14 @@ on:
   #     - main
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        type: choice
+        default: 'main'
+        options:
+          - 'dev'
+          - 'main'
       region:
         description: 'Select Cloud Region'
         required: true

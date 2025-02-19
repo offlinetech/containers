@@ -1,4 +1,4 @@
-name: Terraform Infrastructure
+name: Terraform Setup
 
 on:
   push:
@@ -66,7 +66,7 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
           ARM_USE_OIDC: true
-        run: terraform plan -no-color tfplan
+        run: terraform plan -out tfplan -no-color
 
       # Create string output of Terraform Plan
       - name: Create String Output
