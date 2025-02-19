@@ -81,7 +81,7 @@ jobs:
             if [ $STORAGE_COUNTAINER_EXISTS == "false" ]; then
               echo ""
               echo "Blob container not found. Creating..."
-              az storage container create --name ${{ env.TF_CONTAINER }} --account-name ${{ env.TF_STORAGE_ACCOUNT }}
+              az storage container create --name ${{ env.TF_CONTAINER }} --account-name ${{ env.TF_STORAGE_ACCOUNT }} --auth-mode login
             fi
             STORAGE_CONTAINER=$(az storage account show --name ${{ env.TF_STORAGE_ACCOUNT }} -o tsv --query primaryEndpoints.blob)${{ env.TF_CONTAINER }}
 
