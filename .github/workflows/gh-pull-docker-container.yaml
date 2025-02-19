@@ -33,7 +33,7 @@ jobs:
     steps:
 
       - name: GitHub Container Registry authentication
-        run: echo "${{ secrets.CONTAINERS_PAT }}" | docker login ghcr.io -u containers --password-stdin
+        run: echo ${{ secrets.CONTAINERS_PAT }} | docker login ghcr.io -u Offlinetech --password-stdin
 
       - name: Pull Docker Hub image
         run: docker pull ${{ github.event.inputs.container }}
