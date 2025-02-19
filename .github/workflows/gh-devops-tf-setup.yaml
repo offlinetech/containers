@@ -1,4 +1,4 @@
-name: Terraform Setup
+name: Setup Terraform Infrastructure
 
 on:
   push:
