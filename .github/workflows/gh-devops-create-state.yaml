@@ -38,13 +38,6 @@ jobs:
           tenant-id: ${{ env.AZURE_TENANT_ID }}
           subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
-
       - name: Terraform state storage
         uses: Azure/cli@v2.1.0
         with:
@@ -57,8 +50,9 @@ jobs:
             az account set --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
 
             echo "🎯 Getting resource group named: " ${{ env.TF_RESOURCE_GROUP }}
-            RG_EXISTS=$(az group exists --name ${{ env.TF_RESOURCE_GROUP }} )
+            RG_EXISTS=$(az group exists --name ${{ env.TF_RESOURCE_GROUP }})
             if [ $RG_EXISTS == "false" ]; then
+              echo ""
               echo "Resource group not found, creating... "
               az group create --name ${{ env.TF_RESOURCE_GROUP }} --location ${{ env.LOCATION }}
             fi
