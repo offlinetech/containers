@@ -10,7 +10,7 @@ env:
   AZURE_TENANT_ID: '3df6e774-7c8d-4508-8d07-ffc87c202d4d'
   AZURE_SUBSCRIPTION_ID: 'f160f06a-ac2d-4779-a454-e265dc381318'
   TF_RESOURCE_GROUP: 'github-devops'
-  TF_STORAGE_ACCOUNT: 'stcontainersgh'
+  TF_STORAGE_ACCOUNT: 'stgithubcontainers'
   TF_CONTAINER: 'tfstate'
   LOCATION: 'westeurope'
 
