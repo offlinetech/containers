@@ -36,10 +36,10 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u Offlinetech --password-stdin
 
       - name: Pull Docker Hub image
-        run: docker pull ${{ github.event.inputs.container }}
+        run: docker pull "${{ github.event.inputs.container }}"
 
       - name: Tag the image
-        run: docker tag ${{ github.event.inputs.container }} ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
+        run: docker tag "${{ github.event.inputs.container }}" ghcr.io/${{ github.actor }}/"${{ github.event.inputs.container }}:latest
 
       - name: Push image to GitHub Container Registry
-        run: docker push ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
+        run: docker push ghcr.io/${{ github.actor }}/"${{ github.event.inputs.container }}":latest
