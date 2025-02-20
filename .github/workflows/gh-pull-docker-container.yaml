@@ -3,7 +3,7 @@ name: Pull Docker Container Image
 on:
   push:
     branches:
-      - main
+      - none
   workflow_dispatch:
     inputs:
       container:
@@ -35,11 +35,11 @@ jobs:
       - name: GitHub Container Registry authentication
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u Offlinetech --password-stdin
 
-      # - name: Pull Docker Hub image
-      #   run: docker pull ${{ github.event.inputs.container }}
+      - name: Pull Docker Hub image
+        run: docker pull ${{ github.event.inputs.container }}
 
-      # - name: Tag the image
-      #   run: docker tag ${{ github.event.inputs.container }} ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
+      - name: Tag the image
+        run: docker tag ${{ github.event.inputs.container }} ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
 
-      # - name: Push image to GitHub Container Registry
-      #   run: docker push ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
+      - name: Push image to GitHub Container Registry
+        run: docker push ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
