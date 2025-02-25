@@ -9,7 +9,7 @@ env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
   AZURE_TENANT_ID: '3df6e774-7c8d-4508-8d07-ffc87c202d4d'
   AZURE_SUBSCRIPTION_ID: 'f160f06a-ac2d-4779-a454-e265dc381318'
-  GH_TOKEN: ${{ secrets.REPO_CLASSIC_TOKEN }}
+  
 
 defaults:
   run:
@@ -45,3 +45,5 @@ jobs:
         "/orgs/offlinetech/packages/container/image-prod/permissions" \
         -f permissions='{"read": ["127da96a-8880-44cb-b28f-052e84de409a"]}'
 
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
