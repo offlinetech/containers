@@ -3,7 +3,7 @@ name: Setup Terraform Infrastructure
 on:
   push:
     branches:
-      - none
+      - main
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
