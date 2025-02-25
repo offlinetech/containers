@@ -3,7 +3,7 @@ name: Copy images from GitHub Packages
 on:
   push:
     branches:
-      - main
+      - none
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
@@ -28,6 +28,11 @@ jobs:
 
     steps:
 
+    # Checkout the repository to the GitHub Actions runner
+    - name: 'Checkout'
+      uses: actions/checkout@v4.2.2
+
+
     # Login to Azure with OIDC
     - name: 'Azure login'
       uses: azure/login@v2.2.0
@@ -37,13 +42,3 @@ jobs:
         subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
 
 
-    - name: Grant Repository Access
-      run: |
-        gh api --method PUT \
-        -H "Authorization: token GITHUB_TOKEN" \
-        -H "Accept: application/vnd.github.v3-json" \
-        "/orgs/offlinetech/packages/container/image-prod/permissions" \
-        -f permissions='{"read": ["127da96a-8880-44cb-b28f-052e84de409a"]}'
-
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
