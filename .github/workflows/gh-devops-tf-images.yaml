@@ -1,0 +1,47 @@
+name: Copy images from GitHub Packages
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
+  AZURE_TENANT_ID: '3df6e774-7c8d-4508-8d07-ffc87c202d4d'
+  AZURE_SUBSCRIPTION_ID: 'f160f06a-ac2d-4779-a454-e265dc381318'
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+
+jobs:
+
+  copy-images:
+    name: 'Copy Images'
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Login to Azure with OIDC
+    - name: 'Azure login'
+      uses: azure/login@v2.2.0
+      with:
+        client-id: ${{ env.AZURE_CLIENT_ID }}
+        tenant-id: ${{ env.AZURE_TENANT_ID }}
+        subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+
+    - name: Grant Repository Access
+      run: |
+        gh api --method PUT \
+        -H "Authorization: token REPO_CLASSIC_TOKEN" \
+        -H "Accept: application/vnd.github.v3-json" \
+        "/orgs/offlinetech/packages/container/image-prod/permissions" \
+        -f permissions='{"read": ["127da96a-8880-44cb-b28f-052e84de409a"]}'
+      env:
+        GH_TOKEN: ${{ secrets.REPO_CLASSIC_TOKEN }}

@@ -3,7 +3,7 @@ name: Setup Terraform Infrastructure
 on:
   push:
     branches:
-      - main
+      - none
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
@@ -126,12 +126,12 @@ jobs:
           ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
           ARM_USE_OIDC: true
 
-      - name: 'Terraform Apply'
-        env:
-          ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
-          ARM_USE_OIDC: true
-        run: terraform apply -auto-approve
+      # - name: 'Terraform Apply'
+      #   env:
+      #     ARM_CLIENT_ID: ${{ env.AZURE_CLIENT_ID }}
+      #     ARM_SUBSCRIPTION_ID: ${{ env.AZURE_SUBSCRIPTION_ID }}
+      #     ARM_TENANT_ID: ${{ env.AZURE_TENANT_ID }}
+      #     ARM_USE_OIDC: true
+      #   run: terraform apply -auto-approve
 
 
