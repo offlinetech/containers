@@ -42,7 +42,7 @@ jobs:
         run: docker tag ${{ github.event.inputs.container }} ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}:latest
 
       - name: Push image to GitHub Container Registry
-        run: docker push ghcr.io/offlinetech/image:test
+        run: docker push ghcr.io/offlinetech/${{ github.event.inputs.container }}:latest
 
   # build-image:
   #   name: Build Docker image
