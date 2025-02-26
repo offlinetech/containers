@@ -39,8 +39,8 @@ jobs:
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u containers --password-stdin
           docker pull nginx:latest
-          docker tag nginx:latest ghcr.io/containers/image:test
-          docker push ghcr.io/containers/image:test
+          docker tag nginx:latest ghcr.io/containers/nginx:latest
+          docker push ghcr.io/containers/nginx:latest
 
           
 
