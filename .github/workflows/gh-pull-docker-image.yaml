@@ -41,7 +41,7 @@ jobs:
       - name: Tag the image
         run: |
           docker tag ${{ github.event.inputs.container }} ghcr.io/${{ github.actor }}/${{ github.event.inputs.container }}
-          docker push ghcr.io/offlinetech/nginx
+          docker push ghcr.io/containers/nginx
 
 
   # build-image:
