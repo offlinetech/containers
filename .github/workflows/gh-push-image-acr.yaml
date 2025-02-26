@@ -26,7 +26,7 @@ permissions:
 jobs:
 
   transfer-image:
-    name: 'Transfer Images'
+    name: 'Transfer Docker Image'
     runs-on: ubuntu-latest
 
     steps:
@@ -40,7 +40,7 @@ jobs:
 
     # Login in to GitHub Packages
     - name: 'Login in to GHCR'
-      run: echo "${{ secrets.GITHUB_TOKEN }}" docker login ghcr.io -u §GITHUB_ACTOR --password-stdin
+      run: echo "${{ secrets.CONTAINERS_TOKEN }}" docker login ghcr.io -u §GITHUB_ACTOR --password-stdin
 
     # Pull Image from GitHub Packages
     - name: 'Pull from GHCR'
