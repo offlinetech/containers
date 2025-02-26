@@ -40,7 +40,7 @@ jobs:
 
     # Login in to GitHub Packages
     - name: 'Login in to GHCR'
-      run: echo "${{ secrets.CONTAINERS_TOKEN }}" docker login ghcr.io -u §GITHUB_ACTOR --password-stdin
+      run: echo "${{ secrets.GITHUB_TOKEN }}" docker login ghcr.io -u §GITHUB_ACTOR --password-stdin
 
     # Pull Image from GitHub Packages
     - name: 'Pull from GHCR'
@@ -50,4 +50,3 @@ jobs:
     - name: 'Login in to ACR'
       run: az acr login --name ${{ env.ACR_NAME }}
 
-      
