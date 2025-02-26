@@ -47,7 +47,7 @@ jobs:
 
     # Pull Image from GitHub Packages
     - name: 'Pull from GHCR'
-      run: docker pull ghcr.io/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+      run: docker pull ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
     # Login in to ACR with OIDC
     - name: 'Login in to ACR'
