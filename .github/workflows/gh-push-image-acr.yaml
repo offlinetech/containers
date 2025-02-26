@@ -11,7 +11,7 @@ env:
   AZURE_SUBSCRIPTION_ID: 'f160f06a-ac2d-4779-a454-e265dc381318'
   GITHUB_USERNAME: 'offlinetech'
   ACR_NAME: 'crofflinetechcontainerssandbox'
-  IMAGE_NAME: 'containers/nginx'
+  IMAGE_NAME: 'nginx'
   IMAGE_TAG: 'latest'
 
 defaults:
@@ -58,4 +58,3 @@ jobs:
       run: |
         docker tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ${{ env.ACR_NAME }}/image:test
         docker push ${{ env.ACR_NAME }}/image:test
-        
