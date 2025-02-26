@@ -1,4 +1,4 @@
-name: Pull Docker Container Image
+name: Build Docker Container Image
 
 on:
   push:
@@ -16,34 +16,11 @@ on:
             - 'debian'
             - 'nginx'
             - 'ubuntu'
-
+      tag:
+        description: 'Image Tag'
+        required: true
+        default: 'latest'
 jobs:
-
-  # copy-image:
-  #   name: Copy Docker image
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     id-token: write
-  #     contents: read
-  #     packages: write
-  #   defaults:
-  #     run:
-  #       shell: bash
-
-  #   steps:
-
-  #     # - name: GitHub Container Registry authentication
-  #     #   run: echo "${{ secrets.CONTAINERS_TOKEN }}" | docker login ghcr.io -u containers --password-stdin
-
-  #     - name: Pull Docker Hub image
-  #       run: |
-  #         echo "${{ secrets.CONTAINERS_TOKEN }}" | docker login ghcr.io -u containers --password-stdin
-  #         docker pull nginx:latest
-  #         docker tag nginx:latest ghcr.io/containers/nginx:latest
-  #         docker push ghcr.io/containers/nginx:latest
-
-          
-
 
   build-image:
     name: Build Docker image
@@ -68,4 +45,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          # tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tags: ghcr.io/${{ github.event.inputs.container }}:${{ github.event.inputs.tag }}
