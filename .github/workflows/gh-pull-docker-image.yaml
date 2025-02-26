@@ -37,7 +37,7 @@ jobs:
 
       - name: Pull Docker Hub image
         run: |
-          echo "${{ secrets.CONTAINERS_TOKEN }}" | docker login ghcr.io -u containers --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u containers --password-stdin
           docker pull nginx:latest
           docker tag nginx:latest ghcr.io/containers/image:test
           docker push ghcr.io/containers/image:test
