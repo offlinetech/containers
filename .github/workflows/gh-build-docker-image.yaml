@@ -40,10 +40,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6.14.0
         with:
-          context: .
+          context: ./${{ github.event.inputs.container }}
           push: true
           # tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
           tags: ghcr.io/${{ github.event.inputs.container }}:${{ github.event.inputs.tag }}
