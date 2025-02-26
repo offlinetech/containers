@@ -9,10 +9,10 @@ env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
   AZURE_TENANT_ID: '3df6e774-7c8d-4508-8d07-ffc87c202d4d'
   AZURE_SUBSCRIPTION_ID: 'f160f06a-ac2d-4779-a454-e265dc381318'
-  ACR_NAME: cr
-  IMAGE_NAME: image-dev
-  IMAGE_TAG: latest
-  
+  GITHUB_USERNAME: 'OFFLINETECH'
+  ACR_NAME: 'cr'
+  IMAGE_NAME: 'image-dev'
+  IMAGE_TAG: 'latest'
 
 defaults:
   run:
@@ -38,7 +38,18 @@ jobs:
         tenant-id: ${{ env.AZURE_TENANT_ID }}
         subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
 
-    # Login to GitHub Packages
-    - name: 'Login to GHCR'
+    # Login in to GitHub Packages
+    - name: 'Login in to GHCR'
       run: echo "${{ secrets.GITHUB_TOKEN }}" docker login ghcr.io -u §GITHUB_ACTOR --password-stdin
 
+    # Pull Image from GitHub Packages
+    - name: 'Pull from GHCR'
+      run: docker pull ghcr.io/${{ env.GITHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+    # Login in to ACR with OIDC
+    - name: 'Login in to ACR'
+      uses: azure/docker-login@v2.0
+      with:
+        client-id: ${{ env.AZURE_CLIENT_ID }}
+        tenant-id: ${{ env.AZURE_TENANT_ID }}
+        subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
