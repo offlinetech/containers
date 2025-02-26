@@ -1,14 +1,17 @@
-name: Copy images from GitHub Packages
+name: Copy Image from GitHub to Azure
 
 on:
   push:
     branches:
-      - none
+      - main
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
   AZURE_TENANT_ID: '3df6e774-7c8d-4508-8d07-ffc87c202d4d'
   AZURE_SUBSCRIPTION_ID: 'f160f06a-ac2d-4779-a454-e265dc381318'
+  ACR_NAME: cr
+  IMAGE_NAME: image-dev
+  IMAGE_TAG: latest
   
 
 defaults:
@@ -22,17 +25,11 @@ permissions:
 
 jobs:
 
-  copy-images:
-    name: 'Copy Images'
+  transfer-image:
+    name: 'Transfer Images'
     runs-on: ubuntu-latest
 
     steps:
-
-    # Checkout the repository to the GitHub Actions runner
-    - name: 'Checkout'
-      uses: actions/checkout@v4.2.2
-
-
     # Login to Azure with OIDC
     - name: 'Azure login'
       uses: azure/login@v2.2.0
@@ -41,4 +38,7 @@ jobs:
         tenant-id: ${{ env.AZURE_TENANT_ID }}
         subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
 
+    # Login to GitHub Packages
+    - name: 'Login to GHCR'
+      run: echo "${{ secrets.GITHUB_TOKEN }}" docker login ghcr.io -u §GITHUB_ACTOR --password-stdin
 
