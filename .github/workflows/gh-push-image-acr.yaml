@@ -3,14 +3,14 @@ name: Copy Image from GitHub to Azure
 on:
   push:
     branches:
-      - none
+      - main
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
   AZURE_TENANT_ID: '3df6e774-7c8d-4508-8d07-ffc87c202d4d'
   AZURE_SUBSCRIPTION_ID: 'f160f06a-ac2d-4779-a454-e265dc381318'
-  GITHUB_USERNAME: 'OFFLINETECH'
-  ACR_NAME: 'cr'
+  GITHUB_USERNAME: 'offlinetech'
+  ACR_NAME: 'crofflinetechcontainerssandbox'
   IMAGE_NAME: 'image-dev'
   IMAGE_TAG: 'latest'
 
