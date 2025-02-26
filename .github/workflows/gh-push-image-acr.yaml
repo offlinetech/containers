@@ -53,3 +53,9 @@ jobs:
     - name: 'Login in to ACR'
       run: az acr login --name ${{ env.ACR_NAME }}
 
+    # Push Image to Azure Container Registry
+    - name: 'Pull to ACR'
+      run: |
+        docker tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ${{ env.ACR_NAME }}/image:test
+        docker push ${{ env.ACR_NAME }}/image:test
+        
