@@ -3,14 +3,14 @@ name: Pull Docker Container Image
 on:
   push:
     branches:
-      - none
+      - main
   workflow_dispatch:
     inputs:
       container:
         description: 'Image Name'
         required: true
         type: choice
-        default: 'ubuntu'
+        default: 'nginx'
         options:
             - 'alpine'
             - 'debian'

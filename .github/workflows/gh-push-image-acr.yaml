@@ -3,7 +3,7 @@ name: Copy Image from GitHub to Azure
 on:
   push:
     branches:
-      - main
+      - none
 
 env:
   AZURE_CLIENT_ID: '127da96a-8880-44cb-b28f-052e84de409a'
