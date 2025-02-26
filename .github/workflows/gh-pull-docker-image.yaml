@@ -36,7 +36,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u containers --password-stdin
 
       - name: Pull Docker Hub image
-        run: docker pull ${{ github.event.inputs.container }}
+        run: docker pull ${{ github.event.inputs.container }}:latest
 
       - name: Tag the image
         run: |
