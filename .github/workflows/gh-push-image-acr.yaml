@@ -49,3 +49,5 @@ jobs:
     # Login in to ACR with OIDC
     - name: 'Login in to ACR'
       run: az acr login --name ${{ env.ACR_NAME }}
+
+      
