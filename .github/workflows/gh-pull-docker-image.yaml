@@ -38,7 +38,7 @@ jobs:
       - name: Pull Docker Hub image
         run: |
           docker pull nginx:latest
-          docker tag ghcr.io/containers/image:test
+          docker tag nginx:latest ghcr.io/containers/image:test
           docker push ghcr.io/containers/image:test
 
           
